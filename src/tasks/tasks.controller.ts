@@ -57,16 +57,16 @@ export class TasksController {
   //   return this.tasksService.updateStatusById(id, status);
   // }
 
-  // @Post()
-  // // 1 // createTask(@Body() body) // : Task
-  // createTask(
-  //   @Body() createTaskDto: CreateTaskDto,
-  //   // 2 // @Body('title') title: string,
-  //   // 2 // @Body('description') description: string,
-  // ): Task {
-  //   // 1 // console.log('body', body);
-  //   // 2 // console.log('title', title);
-  //   // 2 // console.log('description', description);
-  //   return this.tasksService.createTask(createTaskDto);
-  // }
+  @Post()
+  // 1 // createTask(@Body() body) // : Task
+  createTask(
+    @Body() createTaskDto: CreateTaskDto,
+    // 2 // @Body('title') title: string,
+    // 2 // @Body('description') description: string,
+  ): Promise<Task> {
+    // 1 // console.log('body', body);
+    // 2 // console.log('title', title);
+    // 2 // console.log('description', description);
+    return this.tasksService.createTask(createTaskDto);
+  }
 }
