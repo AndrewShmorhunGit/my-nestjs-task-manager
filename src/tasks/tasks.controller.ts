@@ -9,7 +9,7 @@ import {
   Query,
 } from '@nestjs/common';
 import { TasksService } from './tasks.service';
-import { TaskStatus } from './task-status.enum';
+import { TaskStatus } from './task-status';
 import { CreateTaskDto } from './dto/create-task.tdo';
 import { GetTasksFilterDto } from './dto/get-tasks-filter.dto';
 import { UpdateTaskStatusDto } from './dto/update-task-status.dto';
@@ -58,15 +58,7 @@ export class TasksController {
   // }
 
   @Post()
-  // 1 // createTask(@Body() body) // : Task
-  createTask(
-    @Body() createTaskDto: CreateTaskDto,
-    // 2 // @Body('title') title: string,
-    // 2 // @Body('description') description: string,
-  ): Promise<Task> {
-    // 1 // console.log('body', body);
-    // 2 // console.log('title', title);
-    // 2 // console.log('description', description);
+  createTask(@Body() createTaskDto: CreateTaskDto): Promise<Task> {
     return this.tasksService.createTask(createTaskDto);
   }
 }
