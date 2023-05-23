@@ -2,7 +2,7 @@ import { FindOneOptions, Repository } from 'typeorm';
 import { Task } from './task.entity';
 import { CreateTaskDto } from './dto/create-task.tdo';
 import { TaskStatus } from './task-status';
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 
 @Injectable()
 export class TasksRepository {
@@ -20,7 +20,15 @@ export class TasksRepository {
     return task;
   }
 
-  findOne(options: FindOneOptions<Task>) {
-    return this.baseRepository.findOne(options);
+  async getTaskById(id: string): Promise<Task> {
+    const found = await this.baseRepository.findOne({
+      where: {
+        id,
+      },
+    });
+    if (!found) {
+      throw new NotFoundException(`Task with ID '${id}' not found!`);
+    }
+    return found;
   }
 }
