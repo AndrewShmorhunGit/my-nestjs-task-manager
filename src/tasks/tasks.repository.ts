@@ -31,4 +31,16 @@ export class TasksRepository {
     }
     return found;
   }
+
+  async deleteTaskById(id: string): Promise<void | string> {
+    // await this.getTaskById(id);
+    const result = await this.baseRepository.delete(id);
+    if (!result.affected) {
+      throw new NotFoundException(
+        `Cant delete task with ID '${id}', task is not found`,
+      );
+    } else {
+      return `Task with ID '${id}' deleted successfully`;
+    }
+  }
 }

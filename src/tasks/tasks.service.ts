@@ -59,10 +59,15 @@ export class TasksService {
   //   return found;
   // }
 
+  deleteTaskById(id: string): Promise<void | string> {
+    return this.tasksRepository.deleteTaskById(id);
+  }
+
   // deleteTaskById(id: string): void {
   //   const found = this.getTaskById(id);
   //   this.tasks = this.tasks.filter((task) => task.id !== id);
   // }
+
   // updateStatusById(id: string, status: TaskStatus) {
   //   const task = this.getTaskById(id);
   //   task.status = status;
