@@ -44,18 +44,18 @@ export class TasksController {
   // }
 
   @Delete('/:id')
-  deleteTaskById(@Param('id') id: string): Promise<void | string> {
+  deleteTaskById(@Param('id') id: string): Promise<void> {
     return this.tasksService.deleteTaskById(id);
   }
 
-  // @Patch('/:id/status')
-  // updateStatusById(
-  //   @Param('id') id: string,
-  //   @Body() updateTaskStatusDto: UpdateTaskStatusDto,
-  // ): Task {
-  //   const { status } = updateTaskStatusDto;
-  //   return this.tasksService.updateStatusById(id, status);
-  // }
+  @Patch('/:id/status')
+  updateStatusById(
+    @Param('id') id: string,
+    @Body() updateTaskStatusDto: UpdateTaskStatusDto,
+  ): Promise<Task> {
+    const { status } = updateTaskStatusDto;
+    return this.tasksService.updateStatusById(id, status);
+  }
 
   @Post()
   createTask(@Body() createTaskDto: CreateTaskDto): Promise<Task> {

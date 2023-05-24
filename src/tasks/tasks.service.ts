@@ -59,7 +59,7 @@ export class TasksService {
   //   return found;
   // }
 
-  deleteTaskById(id: string): Promise<void | string> {
+  deleteTaskById(id: string): Promise<void> {
     return this.tasksRepository.deleteTaskById(id);
   }
 
@@ -67,6 +67,9 @@ export class TasksService {
   //   const found = this.getTaskById(id);
   //   this.tasks = this.tasks.filter((task) => task.id !== id);
   // }
+  updateStatusById(id: string, status: TaskStatus) {
+    return this.tasksRepository.updateStatusById(id, status);
+  }
 
   // updateStatusById(id: string, status: TaskStatus) {
   //   const task = this.getTaskById(id);

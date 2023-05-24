@@ -32,15 +32,20 @@ export class TasksRepository {
     return found;
   }
 
-  async deleteTaskById(id: string): Promise<void | string> {
+  async deleteTaskById(id: string): Promise<void> {
     // await this.getTaskById(id);
     const result = await this.baseRepository.delete(id);
     if (!result.affected) {
       throw new NotFoundException(
         `Cant delete task with ID '${id}', task is not found`,
       );
-    } else {
-      return `Task with ID '${id}' deleted successfully`;
     }
+  }
+
+  async updateStatusById(id: string, status: TaskStatus): Promise<Task> {
+    const task = await this.getTaskById(id);
+    task.status = status;
+    await this.baseRepository.save(task);
+    return task;
   }
 }
