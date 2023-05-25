@@ -1,3 +1,4 @@
+import { User } from 'src/auth/user.entity';
 import { Task } from 'src/tasks/task.entity';
 import { DataSource } from 'typeorm';
 
@@ -11,7 +12,7 @@ export const dataSourceProvider = {
       username: 'postgres',
       password: 'postgres',
       database: 'task-management',
-      entities: [Task],
+      entities: [Task, User],
       synchronize: true,
     });
 
