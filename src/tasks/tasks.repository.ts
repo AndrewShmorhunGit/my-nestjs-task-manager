@@ -1,12 +1,20 @@
-import { FindOneOptions, Repository } from 'typeorm';
+import { FindOneOptions, Repository, createQueryBuilder } from 'typeorm';
 import { Task } from './task.entity';
 import { CreateTaskDto } from './dto/create-task.tdo';
 import { TaskStatus } from './task-status';
 import { Injectable, NotFoundException } from '@nestjs/common';
+import { GetTasksFilterDto } from './dto/get-tasks-filter.dto';
 
 @Injectable()
 export class TasksRepository {
   constructor(private baseRepository: Repository<Task>) {}
+
+  async getTasks(filterDto: GetTasksFilterDto): Promise<Task[]> {
+    const query = this.baseRepository.createQueryBuilder('task');
+    const tasks = await query.getMany();
+    return tasks;
+  }
+
   async createTask(createTaskDto: CreateTaskDto): Promise<Task> {
     const { title, description } = createTaskDto;
 
@@ -33,7 +41,6 @@ export class TasksRepository {
   }
 
   async deleteTaskById(id: string): Promise<void> {
-    // await this.getTaskById(id);
     const result = await this.baseRepository.delete(id);
     if (!result.affected) {
       throw new NotFoundException(
