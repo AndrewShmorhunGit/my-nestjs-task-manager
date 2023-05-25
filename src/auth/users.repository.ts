@@ -4,7 +4,7 @@ import {
   InternalServerErrorException,
 } from '@nestjs/common';
 import { User } from './user.entity';
-import { Repository } from 'typeorm';
+import { FindOneOptions, Repository } from 'typeorm';
 import { AuthCredentialsDto } from './dto/user-credentials.dto';
 import * as bcrypt from 'bcrypt';
 
@@ -33,5 +33,9 @@ export class UsersRepository {
         throw new InternalServerErrorException();
       }
     }
+  }
+
+  findOne(options: FindOneOptions<User>): Promise<User | null> {
+    return this.baseRepository.findOne(options);
   }
 }
