@@ -17,7 +17,6 @@ import { Task } from './task.entity';
 
 @Controller('tasks')
 export class TasksController {
-  // tasksService: TasksService;
   constructor(private tasksService: TasksService) {}
 
   @Get()
@@ -25,19 +24,10 @@ export class TasksController {
     return this.tasksService.getTasks(filterDto);
   }
 
-  // @Get()
-  // getAllTasks(): Task[] {
-  //   return this.tasksService.getAllTasks();
-  // }
-
   @Get('/:id')
   getTaskById(@Param('id') id: string): Promise<Task> {
     return this.tasksService.getTaskById(id);
   }
-  // @Get('/:id')
-  // getTaskById(@Param('id') id: string): Task {
-  //   return this.tasksService.getTaskById(id);
-  // }
 
   @Delete('/:id')
   deleteTaskById(@Param('id') id: string): Promise<void> {
