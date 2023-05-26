@@ -6,9 +6,10 @@ import { DataSource } from 'typeorm';
 import { Task } from './task.entity';
 import { DatabaseModule } from 'src/database/database.module';
 import { dataSourceProvider } from 'src/database/database.providers';
+import { AuthModule } from 'src/auth/auth.module';
 
 @Module({
-  imports: [DatabaseModule],
+  imports: [DatabaseModule, AuthModule],
   controllers: [TasksController],
   providers: [
     TasksService,

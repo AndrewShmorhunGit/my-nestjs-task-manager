@@ -1,4 +1,4 @@
-import { FindOneOptions, Repository, createQueryBuilder } from 'typeorm';
+import { Repository } from 'typeorm';
 import { Task } from './task.entity';
 import { CreateTaskDto } from './dto/create-task.tdo';
 import { TaskStatus } from './task-status';
