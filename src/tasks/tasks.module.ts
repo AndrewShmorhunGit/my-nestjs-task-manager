@@ -4,9 +4,9 @@ import { TasksService } from './tasks.service';
 import { TasksRepository } from './tasks.repository';
 import { DataSource } from 'typeorm';
 import { Task } from './task.entity';
-import { DatabaseModule } from 'src/database/database.module';
-import { dataSourceProvider } from 'src/database/database.providers';
-import { AuthModule } from 'src/auth/auth.module';
+import { DatabaseModule } from '../database/database.module';
+import { dataSourceProvider } from '../database/database.providers';
+import { AuthModule } from '../auth/auth.module';
 
 @Module({
   imports: [DatabaseModule, AuthModule],

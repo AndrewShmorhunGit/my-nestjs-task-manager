@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
-import { DatabaseModule } from 'src/database/database.module';
+import { DatabaseModule } from '../database/database.module';
 import { DataSource } from 'typeorm';
-import { dataSourceProvider } from 'src/database/database.providers';
+import { dataSourceProvider } from '../database/database.providers';
 import { UsersRepository } from './users.repository';
 import { User } from './user.entity';
 import { PassportModule } from '@nestjs/passport';
