@@ -7,9 +7,10 @@ import { Task } from './task.entity';
 import { DatabaseModule } from '../database/database.module';
 import { dataSourceProvider } from '../database/database.providers';
 import { AuthModule } from '../auth/auth.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
-  imports: [DatabaseModule, AuthModule],
+  imports: [ConfigModule, DatabaseModule, AuthModule],
   controllers: [TasksController],
   providers: [
     TasksService,
