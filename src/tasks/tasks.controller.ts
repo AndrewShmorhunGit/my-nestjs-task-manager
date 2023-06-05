@@ -28,7 +28,7 @@ export class TasksController {
     private tasksService: TasksService,
     private configService: ConfigService,
   ) {
-    console.log(configService.get('TEST_VALUE'));
+    console.log(configService.get<string>('TEST_VALUE'));
   }
 
   @Get()
