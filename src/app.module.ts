@@ -4,6 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { DatabaseModule } from './database/database.module';
 import { AuthModule } from './auth/auth.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { configValidationSchema } from './config.schema';
 console.log(process.env.STAGE);
 @Module({
   imports: [
@@ -14,22 +15,21 @@ console.log(process.env.STAGE);
         './.env.dev',
         // `./.env.${process.env.STAGE}`,
       ],
+      validationSchema: configValidationSchema,
     }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
-      useFactory: async (configService: ConfigService) => {
-        return {
-          type: 'postgres',
-          host: configService.get<string>('DB_HOST'),
-          port: configService.get<number>('DB_PORT'),
-          username: configService.get<string>('DB_USERNAME'),
-          password: configService.get<string>('DB_PASSWORD'),
-          database: configService.get<string>('DB_DATABASE'),
-          autoLoadEntities: true,
-          synchronize: true,
-        };
-      },
+      useFactory: async (configService: ConfigService) => ({
+        type: 'postgres',
+        host: configService.get<string>('DB_HOST'),
+        port: configService.get<number>('DB_PORT'),
+        username: configService.get<string>('DB_USERNAME'),
+        password: configService.get<string>('DB_PASSWORD'),
+        database: configService.get<string>('DB_DATABASE'),
+        autoLoadEntities: true,
+        synchronize: true,
+      }),
     }),
     // TypeOrmModule.forRoot({
     //   type: 'postgres',
