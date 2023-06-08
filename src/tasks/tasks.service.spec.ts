@@ -1,6 +1,7 @@
 import { Test } from '@nestjs/testing';
 import { TasksService } from './tasks.service';
 import { TasksRepository } from './tasks.repository';
+import { DataSource } from 'typeorm';
 
 ///////////////////////////////////////////
 
@@ -31,13 +32,17 @@ describe('TaskService', () => {
     const module = await Test.createTestingModule({
       providers: [
         TasksService,
-        { provide: TasksRepository, useFactory: mockTasksRepository },
+        {
+          provide: 'TASKS_REPOSITORY', // That is because of difference repository creation!!(look at the tasks.module)
+          useFactory: mockTasksRepository,
+        },
       ],
     }).compile();
 
     // 3.
-    tasksService = module.get<TasksService>(TasksService);
-    tasksRepository = module.get<TasksRepository>(TasksRepository);
+    tasksService = module.get(TasksService);
+    tasksRepository = module.get('TASKS_REPOSITORY');
+    // and here the same difference(look at the tasks.module)!
   });
 
   // 4.
