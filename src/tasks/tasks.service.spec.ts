@@ -1,6 +1,10 @@
 import { Test } from '@nestjs/testing';
 import { TasksService } from './tasks.service';
 import { TasksRepository } from './tasks.repository';
+
+///////////////////////////////////////////
+
+// DESCRIPTION of the testing process
 // 0. Somehow we need to simulate NestJS module.. With NestJS testing tools. Before every test, every time I want to create dump module which will consist tasks service and repo.. with async beforeEach func..
 // 1. Here we wil initialize NestJS module with tasksService and tasksRepository
 // 2. We can provide TasksService as a provider, but! TasksService is relies on TasksRepository, and we cant provide TypeORM here).. We will use technique called mocking. And don't forget to compile it!
