@@ -2,6 +2,10 @@ import { Test } from '@nestjs/testing';
 import { TasksService } from './tasks.service';
 
 import { User } from 'src/auth/user.entity';
+// import { Task } from './task.entity';
+import { TaskStatus } from './task-status';
+// import { NotFoundException } from '@nestjs/common';
+import { TasksRepository } from './tasks.repository';
 
 ///////////////////////////////////////////
 
@@ -20,7 +24,25 @@ import { User } from 'src/auth/user.entity';
 // 4.4.1 Create mock user
 // 4.5 We are still not testing `return` result. How to do this? To equal call ot `var = result` , then expect(result).toEqual('..something').. for this we will use mockTasksRepository,getTasks(jest.function) to crate a mock result(and we need to make current test an async test because of using .mockResolvedValue() method).. for this we have to remove type of tasksRepository, because it not include mock functions as a methods! And finally w are simplifying toHaveBeenCalled methods because if we return something it automatically means that function have been called!
 
+// 5. getTaskById create new describe blocks for two cases, 5.1. return result &  5.2. handle error.
+// 5.1
+// 5.1.1 All we need for this is to create a mockTask and return it.. lets define it..
+// 5.1.2 Create mock method at mockTasksRepository
+// 5.1.3 tasksRepository.getTasksById.mockResolvedValue(mockTask); return the mockTask by tasksRepository.getTasksById call
+// 5.1.4 Declare result as a function call and provide expectations
+// 5.2 For this let's look at our function, whatever tasksRepository.getTaskById returns false, there is an error thrown with NotFoundException() an that is what we want to test
+// 5.2.1 Make sure that our mock function returns Promise of `null` (for rejects it should be promise) by tasksRepository.getTasksById.mockRejectedValue(Promise<null>)
+// 5.2.2 And write our expectations but as await expect(...).rejects.toThrow()
+
 ///////////////////////////////////////////
+
+// 2.
+const mockTasksRepository = () => ({
+  // 4.1
+  getTasks: jest.fn(),
+  // 5.1.2
+  getTaskById: jest.fn(),
+});
 
 // 4.4.1
 const mockUser: User = {
@@ -29,11 +51,15 @@ const mockUser: User = {
   password: 'mockPassword',
   tasks: [],
 };
-// 2.
-const mockTasksRepository = () => ({
-  // 4.1
-  getTasks: jest.fn(),
-});
+
+// 5.1.1
+const mockTask = {
+  id: 'mockId',
+  title: 'mockTitle',
+  description: 'mockDescription',
+  status: TaskStatus.OPEN,
+  // user: mockUser,
+};
 
 describe('TaskService', () => {
   // 1.
@@ -54,7 +80,7 @@ describe('TaskService', () => {
 
     // 3.
     tasksService = module.get(TasksService);
-    tasksRepository = module.get('TASKS_REPOSITORY');
+    tasksRepository = module.get<TasksRepository>('TASKS_REPOSITORY');
     // and here the same difference(look at the tasks.module)!
   });
 
@@ -65,7 +91,7 @@ describe('TaskService', () => {
       // 4.2
       // expect(tasksRepository.getTasks).not.toHaveBeenCalled(); // simplified by 4.5 step
       // 4.5
-      tasksRepository.getTasks.mockResolvedValue('mockResolvedValue'); // wea are using mockResolvedValue because we are dealing with promise
+      tasksRepository.getTasks.mockResolvedValue('mockResolvedValue'); // we are using mockResolvedValue because we are dealing with promise
       const result = await tasksService.getTasks(null, mockUser); // add await by 4.5 step
       // 4.4
       // tasksService.getTasks(null, mockUser); edited by 4.5 step..
@@ -74,6 +100,25 @@ describe('TaskService', () => {
       // expect(tasksRepository.getTasks).toHaveBeenCalled(); // simplified by 4.5 step
       // 4.5
       expect(result).toEqual('mockResolvedValue');
+    });
+  });
+
+  describe('getTaskById', () => {
+    it('calls TasksRepository.getTasksById and returns the result', async () => {
+      // 5.1.3
+      tasksRepository.getTaskById.mockResolvedValue(mockTask);
+      // 5.1.4
+      const result = await tasksService.getTaskById('mockId', mockUser);
+      expect(result).toEqual(mockTask);
+    });
+
+    it('calls TasksRepository.getTasksById and handles an error', async () => {
+      // 5.2.1
+      tasksRepository.getTaskById.mockRejectedValue(Promise<null>);
+      // 5.2.2
+      await expect(
+        tasksService.getTaskById('mockId', mockUser),
+      ).rejects.toThrow();
     });
   });
 });

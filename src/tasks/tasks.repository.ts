@@ -69,8 +69,8 @@ export class TasksRepository {
       },
     });
     if (!found) {
-      // throw new NotFoundException(`Task with ID '${id}' not found!`);
-      throw new NotFoundException(`404 not found!`);
+      throw new NotFoundException(`Task with ID '${id}' not found!`);
+      // throw new NotFoundException(`404 not found!`);
     }
     return found;
   }
